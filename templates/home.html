@@ -1,0 +1,528 @@
+{% extends "base.html" %}
+
+{% block title %}
+    {% if profile %}
+        {{ profile.name }} | {{ profile.professional_title }}
+    {% else %}
+        Catalyst | My Portfolio
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+
+<!-- HERO SECTION -->
+<section class="hero" id="home">
+
+    <div class="hero-content">
+
+        {% if profile %}
+
+            <p class="hero-greeting">HELLO, I'M</p>
+
+            <h1>{{ profile.name }}</h1>
+
+            <h2>{{ profile.professional_title }}</h2>
+
+            <p class="hero-description">
+                {{ profile.short_bio }}
+            </p>
+
+            {% if profile.available_for_work %}
+                <p class="availability">
+                    <span class="availability-dot"></span>
+                    Available for opportunities
+                </p>
+            {% endif %}
+
+            <div class="hero-actions">
+                <a class="btn btn-primary"
+                   href="{% url 'projects:list' %}">
+                    Explore My Projects
+                </a>
+
+                <a class="btn btn-secondary"
+                   href="{% url 'contact:contact' %}">
+                    Contact Me
+                </a>
+            </div>
+
+            <div class="social-links">
+
+                {% if profile.github_url %}
+                    <a href="{{ profile.github_url }}"
+                       target="_blank"
+                       rel="noopener noreferrer">
+                        GitHub ↗
+                    </a>
+                {% endif %}
+
+                {% if profile.linkedin_url %}
+                    <a href="{{ profile.linkedin_url }}"
+                       target="_blank"
+                       rel="noopener noreferrer">
+                        LinkedIn ↗
+                    </a>
+                {% endif %}
+
+                {% if profile.twitter_url %}
+                    <a href="{{ profile.twitter_url }}"
+                       target="_blank"
+                       rel="noopener noreferrer">
+                        X / Twitter ↗
+                    </a>
+                {% endif %}
+
+            </div>
+
+        {% else %}
+
+            <p class="hero-greeting">WELCOME</p>
+
+            <h1>Welcome to My Portfolio</h1>
+
+            <p class="hero-description">
+                My portfolio is being prepared. Please check back soon.
+            </p>
+
+        {% endif %}
+
+    </div>
+
+    {% if profile and profile.profile_image %}
+        <div class="hero-image-wrapper">
+            <img
+                class="hero-image"
+                src="{{ profile.profile_image.url }}"
+                alt="Portrait of {{ profile.name }}"
+            >
+        </div>
+    {% endif %}
+
+</section>
+
+
+<!-- ABOUT SECTION -->
+{% if profile and profile.about %}
+<section class="about-section section" id="about">
+
+    <div class="section-heading">
+        <p class="section-eyebrow">GET TO KNOW ME</p>
+        <h2>About Me</h2>
+    </div>
+
+    <div class="about-content">
+        <p>{{ profile.about|linebreaksbr }}</p>
+    </div>
+
+</section>
+{% endif %}
+
+
+<!-- FEATURED PROJECTS -->
+<section class="featured-projects section" id="projects">
+
+    <div class="section-heading">
+        <p class="section-eyebrow">WHAT I'VE BUILT</p>
+        <h2>Featured Projects</h2>
+        <p>
+            A selection of projects that demonstrate my skills
+            and practical experience.
+        </p>
+    </div>
+
+    {% if featured_projects %}
+        <div class="projects-grid">
+
+            {% for project in featured_projects %}
+                <article class="project-card">
+
+                    {% if project.image %}
+                        <a href="{% url 'projects:detail' project.slug %}">
+                            <img
+                                class="card-image"
+                                src="{{ project.image.url }}"
+                                alt="{{ project.title }}"
+                                loading="lazy"
+                            >
+                        </a>
+                    {% endif %}
+
+                    <div class="card-content">
+                        <h3>
+                            <a href="{% url 'projects:detail' project.slug %}">
+                                {{ project.title }}
+                            </a>
+                        </h3>
+
+                        <p>{{ project.short_description }}</p>
+
+                        <p class="technology-list">
+                            <strong>Technologies:</strong>
+                            {{ project.technologies }}
+                        </p>
+
+                        <a class="text-link"
+                           href="{% url 'projects:detail' project.slug %}">
+                            View Project →
+                        </a>
+
+                    </div>
+
+                </article>
+            {% endfor %}
+
+        </div>
+
+        <div class="section-action">
+            <a class="btn btn-secondary"
+               href="{% url 'projects:list' %}">
+                View All Projects
+            </a>
+        </div>
+
+    {% else %}
+        <p class="empty-state">
+            Featured projects will appear here once added in Admin.
+        </p>
+    {% endif %}
+
+</section>
+
+
+<!-- EXPERIENCE SECTION -->
+<section class="experience-preview section" id="experience">
+
+    <div class="section-heading">
+        <p class="section-eyebrow">MY JOURNEY</p>
+        <h2>Experience</h2>
+        <p>Practical experience, responsibilities, and professional growth.</p>
+    </div>
+
+    {% if experiences %}
+
+        <div class="timeline">
+
+            {% for experience in experiences %}
+                <article class="timeline-item experience-card">
+
+                    <h3>{{ experience.job_title }}</h3>
+
+                    <p class="item-subtitle">
+                        {{ experience.organization }}
+                        {% if experience.location %}
+                            · {{ experience.location }}
+                        {% endif %}
+                    </p>
+
+                    <p class="item-date">
+                        {{ experience.start_date|date:"M Y" }}
+                        –
+                        {% if experience.currently_working %}
+                            Present
+                        {% elif experience.end_date %}
+                            {{ experience.end_date|date:"M Y" }}
+                        {% else %}
+                            Date not specified
+                        {% endif %}
+                    </p>
+
+                    <p>
+                        {{ experience.description|truncatewords:35 }}
+                    </p>
+
+                </article>
+            {% endfor %}
+
+        </div>
+
+        <div class="section-action">
+            <a class="text-link"
+               href="{% url 'experience:list' %}">
+                View Full Experience →
+            </a>
+        </div>
+
+    {% else %}
+        <p class="empty-state">
+            Experience will appear here once added.
+        </p>
+    {% endif %}
+
+</section>
+
+
+<!-- EDUCATION SECTION -->
+<section class="education-preview section" id="education">
+
+    <div class="section-heading">
+        <p class="section-eyebrow">MY FOUNDATION</p>
+        <h2>Education</h2>
+    </div>
+
+    {% if educations %}
+
+        <div class="education-grid">
+
+            {% for education in educations %}
+                <article class="education-card">
+
+                    <h3>{{ education.degree }}</h3>
+
+                    <p class="item-subtitle">
+                        {{ education.institution }}
+                    </p>
+
+                    <p>{{ education.field_of_study }}</p>
+
+                    {% if education.location %}
+                        <p>{{ education.location }}</p>
+                    {% endif %}
+
+                    <p class="item-date">
+                        {{ education.start_date|date:"Y" }}
+                        –
+                        {% if education.currently_studying %}
+                            Present
+                        {% elif education.end_date %}
+                            {{ education.end_date|date:"Y" }}
+                        {% else %}
+                            Date not specified
+                        {% endif %}
+                    </p>
+
+                    {% if education.description %}
+                        <p>
+                            {{ education.description|truncatewords:25 }}
+                        </p>
+                    {% endif %}
+
+                </article>
+            {% endfor %}
+
+        </div>
+
+        <div class="section-action">
+            <a class="text-link"
+               href="{% url 'education:list' %}">
+                View Education →
+            </a>
+        </div>
+
+    {% else %}
+        <p class="empty-state">
+            Education details will appear here once added.
+        </p>
+    {% endif %}
+
+</section>
+
+
+<!-- SKILLS SECTION -->
+<section class="skills-preview section" id="skills">
+
+    <div class="section-heading">
+        <p class="section-eyebrow">MY TOOLKIT</p>
+        <h2>Featured Skills</h2>
+        <p>Technologies and practical skills I am developing and using.</p>
+    </div>
+
+    {% if featured_skills %}
+
+        <div class="skills-grid">
+
+            {% for skill in featured_skills %}
+                <article class="skill-card">
+
+                    <div class="skill-heading">
+                        <h3>{{ skill.name }}</h3>
+                        <span>{{ skill.proficiency }}%</span>
+                    </div>
+
+                    <p class="skill-category">
+                        {{ skill.get_category_display }}
+                    </p>
+
+                    <div
+                        class="skill-progress"
+                        role="progressbar"
+                        aria-label="{{ skill.name }} proficiency"
+                        aria-valuenow="{{ skill.proficiency }}"
+                        aria-valuemin="0"
+                        aria-valuemax="100"
+                    >
+                        <span style="width: {{ skill.proficiency }}%;"></span>
+                    </div>
+
+                </article>
+            {% endfor %}
+
+        </div>
+
+        <div class="section-action">
+            <a class="btn btn-secondary"
+               href="{% url 'skills:list' %}">
+                Explore All Skills
+            </a>
+        </div>
+
+    {% else %}
+        <p class="empty-state">
+            Featured skills will appear here once selected in Admin.
+        </p>
+    {% endif %}
+
+</section>
+
+
+<!-- CERTIFICATIONS SECTION -->
+<section class="certifications-preview section" id="certifications">
+
+    <div class="section-heading">
+        <p class="section-eyebrow">PROOF OF LEARNING</p>
+        <h2>Certifications</h2>
+    </div>
+
+    {% if featured_certifications %}
+
+        <div class="certifications-grid">
+
+            {% for certification in featured_certifications %}
+                <article class="certification-card">
+
+                    <h3>{{ certification.name }}</h3>
+
+                    <p class="item-subtitle">
+                        {{ certification.issuing_organization }}
+                    </p>
+
+                    <p class="item-date">
+                        Issued {{ certification.issue_date|date:"M Y" }}
+                    </p>
+
+                    {% if certification.does_not_expire %}
+                        <p class="credential-status">No expiry date</p>
+                    {% elif certification.expiry_date %}
+                        <p>
+                            Expires {{ certification.expiry_date|date:"M Y" }}
+                        </p>
+                    {% endif %}
+
+                    {% if certification.credential_url %}
+                           <a class="text-link"
+                           href="{{ certification.credential_url }}"
+                           target="_blank"
+                           rel="noopener noreferrer">
+                            Verify Credential ↗
+                        </a>
+                    {% endif %}
+
+                </article>
+            {% endfor %}
+
+        </div>
+
+        <div class="section-action">
+            <a class="btn btn-secondary"
+               href="{% url 'certifications:list' %}">
+                View All Certifications
+            </a>
+        </div>
+
+    {% else %}
+        <p class="empty-state">
+            Featured certifications will appear here once added.
+        </p>
+    {% endif %}
+
+</section>
+
+
+<!-- LATEST ARTICLES -->
+<section class="blog-preview section" id="blog">
+
+    <div class="section-heading">
+        <p class="section-eyebrow">IDEAS AND INSIGHTS</p>
+        <h2>Latest Articles</h2>
+        <p>Technical notes, lessons learned, and useful ideas.</p>
+    </div>
+
+    {% if latest_posts %}
+
+        <div class="blog-grid">
+
+            {% for post in latest_posts %}
+                <article class="blog-card">
+
+                    {% if post.cover_image %}
+                        <a href="{% url 'blog:detail' post.slug %}">
+                            <img
+                                class="card-image"
+                                src="{{ post.cover_image.url }}"
+                                alt="{{ post.title }}"
+                                loading="lazy"
+                            >
+                        </a>
+                    {% endif %}
+
+                    <div class="card-content">
+
+                        <p class="item-date">
+                            {{ post.published_at|date:"M d, Y" }}
+                        </p>
+
+                        <h3>
+                            <a href="{% url 'blog:detail' post.slug %}">
+                                {{ post.title }}
+                            </a>
+                        </h3>
+
+                        <p>{{ post.excerpt }}</p>
+
+                        <a class="text-link"
+                           href="{% url 'blog:detail' post.slug %}">
+                            Read Article →
+                        </a>
+
+                    </div>
+
+                </article>
+            {% endfor %}
+
+        </div>
+
+        <div class="section-action">
+            <a class="btn btn-secondary"
+               href="{% url 'blog:list' %}">
+                Read All Articles
+            </a>
+        </div>
+
+    {% else %}
+        <p class="empty-state">
+            Articles will appear here when published.
+        </p>
+    {% endif %}
+
+</section>
+
+
+<!-- CONTACT CALL TO ACTION -->
+<section class="contact-cta section">
+
+    <p class="section-eyebrow">HAVE A PROJECT IN MIND?</p>
+
+    <h2>Let's Build Something Meaningful</h2>
+
+    <p>
+        Have an opportunity, a technical idea, or a project to discuss?
+        I'd be glad to hear from you.
+    </p>
+
+    <a class="btn btn-primary"
+       href="{% url 'contact:contact' %}">
+        Get in Touch →
+    </a>
+
+</section>
+
+{% endblock %}

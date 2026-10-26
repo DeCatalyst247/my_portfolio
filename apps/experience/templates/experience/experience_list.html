@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Experience | {{ block.super }}
+{% endblock %}
+
+{% block content %}
+
+<section>
+    <h1>Experience</h1>
+
+    <p>
+        My professional, technical, and practical experience.
+    </p>
+
+    {% if experiences %}
+
+        <div class="experience-list">
+
+            {% for experience in experiences %}
+
+                <article class="experience-card">
+
+                    <h2>{{ experience.job_title }}</h2>
+
+                    <h3>{{ experience.organization }}</h3>
+
+                    {% if experience.location %}
+                        <p>{{ experience.location }}</p>
+                    {% endif %}
+
+                    <p>
+                        <strong>{{ experience.employment_type }}</strong>
+                    </p>
+
+                    <p>
+                        {{ experience.start_date|date:"M Y" }}
+                        -
+                        {% if experience.currently_working %}
+                            Present
+                        {% elif experience.end_date %}
+                            {{ experience.end_date|date:"M Y" }}
+                        {% endif %}
+                    </p>
+
+                    <div>
+                        {{ experience.description|linebreaks }}
+                    </div>
+
+                    {% if experience.technologies %}
+                        <p>
+                            <strong>Technologies / Skills:</strong>
+                            {{ experience.technologies }}
+                        </p>
+                    {% endif %}
+
+                </article>
+
+            {% endfor %}
+
+        </div>
+
+    {% else %}
+
+        <p>No experience has been added yet.</p>
+
+    {% endif %}
+
+</section>
+
+{% endblock %}

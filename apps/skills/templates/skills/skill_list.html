@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Skills | {{ block.super }}
+{% endblock %}
+
+{% block content %}
+<section>
+    <h1>Technical Skills</h1>
+    <p>The tools and technologies I use and continue to learn.</p>
+
+    {% if skills %}
+        {% regroup skills by get_category_display as skill_groups %}
+
+        {% for group in skill_groups %}
+            <section class="skill-category">
+                <h2>{{ group.grouper }}</h2>
+
+                <div class="skills-grid">
+                    {% for skill in group.list %}
+                        <article class="skill-card">
+                            <h3>{{ skill.name }}</h3>
+
+                            {% if skill.description %}
+                                <p>{{ skill.description }}</p>
+                            {% endif %}
+
+                            <p>Proficiency: {{ skill.proficiency }}%</p>
+
+                            <progress
+                                value="{{ skill.proficiency }}"
+                                max="100"
+                            ></progress>
+                        </article>
+                    {% endfor %}
+                </div>
+            </section>
+        {% endfor %}
+    {% else %}
+        <p>No skills have been added yet.</p>
+    {% endif %}
+</section>
+{% endblock %}

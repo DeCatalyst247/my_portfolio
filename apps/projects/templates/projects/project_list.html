@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Projects | {{ block.super }}
+{% endblock %}
+
+
+{% block content %}
+
+<section>
+
+    <h1>My Projects</h1>
+
+    <p>
+        Here are some of the projects I have worked on.
+    </p>
+
+    {% if projects %}
+
+        <div class="projects-grid">
+
+            {% for project in projects %}
+
+                <article class="project-card">
+
+                    {% if project.image %}
+                        <img
+                            src="{{ project.image.url }}"
+                            alt="{{ project.title }}"
+                        >
+                    {% endif %}
+
+                    <h2>
+                        {{ project.title }}
+                    </h2>
+
+                    <p>
+                        {{ project.short_description }}
+                    </p>
+
+                    <p>
+                        <strong>Technologies:</strong>
+                        {{ project.technologies }}
+                    </p>
+
+                    <a href="{% url 'projects:detail' project.slug %}">
+                        View Project
+                    </a>
+
+                </article>
+
+            {% endfor %}
+
+        </div>
+
+    {% else %}
+
+        <p>
+            No projects have been added yet.
+        </p>
+
+    {% endif %}
+
+</section>
+
+{% endblock %}

@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Certifications | {{ block.super }}
+{% endblock %}
+
+{% block content %}
+<section>
+    <h1>Certifications & Training</h1>
+    <p>Professional learning, credentials, and technical training.</p>
+
+    {% if certifications %}
+        <div class="certifications-grid">
+            {% for certification in certifications %}
+                <article class="certification-card">
+                    <h2>{{ certification.name }}</h2>
+
+                    <p>
+                        Issued by:
+                        <strong>
+                            {{ certification.issuing_organization }}
+                        </strong>
+                    </p>
+
+                    <p>
+                        Issued {{ certification.issue_date|date:"M Y" }}
+                    </p>
+
+                    {% if certification.does_not_expire %}
+                        <p>Does not expire</p>
+                    {% elif certification.expiry_date %}
+                        <p>
+                            Expires
+                            {{ certification.expiry_date|date:"M Y" }}
+                        </p>
+                    {% endif %}
+
+                    {% if certification.description %}
+                        <div>
+                            {{ certification.description|linebreaks }}
+                        </div>
+                    {% endif %}
+
+                    {% if certification.credential_url %}
+                        <a
+                            href="{{ certification.credential_url }}"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                        >
+                            Verify Credential
+                        </a>
+                    {% endif %}
+
+                    {% if certification.certificate_file %}
+                        <a
+                            href="{{ certification.certificate_file.url }}"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                        >
+                            View Certificate
+                        </a>
+                    {% endif %}
+                </article>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p>No certifications have been added yet.</p>
+    {% endif %}
+</section>
+{% endblock %}

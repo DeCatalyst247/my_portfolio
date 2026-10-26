@@ -1,0 +1,41 @@
+# Environment variables and secrets
+.env
+.env.*
+!.env.example
+
+# Python cache and compiled files
+_pycache_/
+*.py[cod]
+*$py.class
+
+# Virtual environments
+venv/
+.venv/
+env/
+
+# Django generated files
+*.log
+local_settings.py
+
+# Local databases
+db.sqlite3
+db.sqlite3-journal
+*.sqlite3
+
+# Collected static files
+/staticfiles/
+
+# User-uploaded media
+# Uncomment this if you decide to store media outside Git
+# /media/
+
+# Test and coverage files
+.coverage
+htmlcov/
+.pytest_cache/
+
+# Editor and operating system files
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db

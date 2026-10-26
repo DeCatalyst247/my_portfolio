@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Education | {{ block.super }}
+{% endblock %}
+
+{% block content %}
+
+<section>
+    <h1>Education</h1>
+
+    <p>
+        My academic background and educational journey.
+    </p>
+
+    {% if educations %}
+
+        <div class="education-list">
+
+            {% for education in educations %}
+
+                <article class="education-card">
+
+                    <h2>{{ education.degree }}</h2>
+
+                    <h3>{{ education.institution }}</h3>
+
+                    <p>
+                        <strong>
+                            {{ education.field_of_study }}
+                        </strong>
+                    </p>
+
+                    {% if education.location %}
+                        <p>{{ education.location }}</p>
+                    {% endif %}
+
+                    <p>
+                        {{ education.start_date|date:"M Y" }}
+                        -
+                        {% if education.currently_studying %}
+                            Present
+                        {% elif education.end_date %}
+                            {{ education.end_date|date:"M Y" }}
+                        {% endif %}
+                    </p>
+
+                    {% if education.description %}
+                        <div>
+                            {{ education.description|linebreaks }}
+                        </div>
+                    {% endif %}
+
+                </article>
+
+            {% endfor %}
+
+        </div>
+
+    {% else %}
+
+        <p>No education has been added yet.</p>
+
+    {% endif %}
+
+</section>
+
+{% endblock %}

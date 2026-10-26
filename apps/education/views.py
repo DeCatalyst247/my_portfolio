@@ -1,0 +1,16 @@
+from django.shortcuts import render
+from .models import Education
+
+
+def education_list(request):
+    educations = Education.objects.all()
+
+    context = {
+        "educations": educations,
+    }
+
+    return render(
+        request,
+        "education/education_list.html",
+        context
+    )

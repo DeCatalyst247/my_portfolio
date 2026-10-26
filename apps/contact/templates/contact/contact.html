@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+
+{% block title %}Contact | {{ block.super }}{% endblock %}
+
+{% block content %}
+<section class="contact-section">
+    <h1>Get in Touch</h1>
+
+    <p>
+        Have a project idea, internship opportunity, or technical question?
+        Send me a message.
+    </p>
+
+    {% if messages %}
+        {% for message in messages %}
+            <p class="alert {{ message.tags }}">
+                {{ message }}
+            </p>
+        {% endfor %}
+    {% endif %}
+
+    <form method="post" class="contact-form">
+        {% csrf_token %}
+
+        {{ form.non_field_errors }}
+
+        <div class="form-field">
+            <label for="{{ form.name.id_for_label }}">Full name</label>
+            {{ form.name }}
+            {{ form.name.errors }}
+        </div>
+
+        <div class="form-field">
+            <label for="{{ form.email.id_for_label }}">Email address</label>
+            {{ form.email }}
+            {{ form.email.errors }}
+        </div>
+
+        <div class="form-field">
+            <label for="{{ form.subject.id_for_label }}">Subject</label>
+            {{ form.subject }}
+            {{ form.subject.errors }}
+        </div>
+
+        <div class="form-field">
+            <label for="{{ form.message.id_for_label }}">Message</label>
+            {{ form.message }}
+            {{ form.message.errors }}
+        </div>
+
+        <button type="submit">Send Message</button>
+    </form>
+</section>
+{% endblock %}

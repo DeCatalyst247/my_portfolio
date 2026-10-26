@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+
+{% block title %}
+    {{ project.title }} | {{ block.super }}
+{% endblock %}
+
+
+{% block content %}
+
+<article>
+
+    {% if project.image %}
+        <img
+            src="{{ project.image.url }}"
+            alt="{{ project.title }}"
+        >
+    {% endif %}
+
+    <h1>
+        {{ project.title }}
+    </h1>
+
+    <p>
+        {{ project.short_description }}
+    </p>
+
+    <div>
+        {{ project.description|linebreaks }}
+    </div>
+
+    <p>
+        <strong>Technologies:</strong>
+        {{ project.technologies }}
+    </p>
+
+    {% if project.github_url %}
+        <a
+            href="{{ project.github_url }}"
+            target="_blank"
+            rel="noopener noreferrer"
+        >
+            View on GitHub
+        </a>
+    {% endif %}
+
+    {% if project.live_url %}
+        <a
+            href="{{ project.live_url }}"
+            target="_blank"
+            rel="noopener noreferrer"
+        >
+            Live Demo
+        </a>
+    {% endif %}
+
+    <br>
+
+    <a href="{% url 'projects:list' %}">
+        ← Back to Projects
+    </a>
+
+</article>
+
+{% endblock %}

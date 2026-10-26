@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+
+{% block title %}Blog | {{ block.super }}{% endblock %}
+
+{% block content %}
+<section>
+    <h1>Technical Blog</h1>
+    <p>Notes, lessons, and insights from my engineering and software journey.</p>
+
+    {% if posts %}
+        <div class="blog-grid">
+            {% for post in posts %}
+                <article class="blog-card">
+                    {% if post.cover_image %}
+                        <img
+                            src="{{ post.cover_image.url }}"
+                            alt="{{ post.title }}"
+                        >
+                    {% endif %}
+
+                    <h2>
+                        <a href="{% url 'blog:detail' post.slug %}">
+                            {{ post.title }}
+                        </a>
+                    </h2>
+
+                    <p>{{ post.excerpt }}</p>
+
+                    <p>
+                        {{ post.published_at|date:"M d, Y" }}
+                    </p>
+
+                    <a href="{% url 'blog:detail' post.slug %}">
+                        Read Article
+                    </a>
+                </article>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p>No articles have been published yet. Check back soon.</p>
+    {% endif %}
+</section>
+{% endblock %}
