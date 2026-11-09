@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/6.1/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/6.1/ref/settings/
 """
-
+import os
 from pathlib import Path
 
 from decouple import config,Csv 
@@ -131,6 +131,7 @@ USE_TZ = True
 
 STATIC_URL = "/static/"
 STATICFILES_DIRS =[BASE_DIR / 'static',]
+STATIC_ROOT = BASE_DIR / "staticfiles"
 MEDIA_URL ='/media/'
 MEDIA_ROOT =BASE_DIR /'media'
 
